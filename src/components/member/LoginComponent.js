@@ -416,7 +416,7 @@ const LoginComponent = () => {
                         src={
                           showPassword
                             ? "/images/showPw.png"
-                            : "/images/hidePw.png"
+                            : "/images/HidePw.png"
                         }
                         alt="아이콘"
                         width="24"
