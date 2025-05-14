@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const host = "http://leo_spring_app:8080/api/concert";
+const host = "https://www.audimew.store/api/concert";
 
 // 콘서트 리스트 (카테고리, 페이지네이션)
 export const getList = async (pageRequest, category) => {

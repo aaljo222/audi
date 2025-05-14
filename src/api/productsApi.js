@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const host = "http://leo_spring_app:8080/api/product";
+const host = "https://www.audimew.store/api/product";
 
 export const getList = async (pageParam, category) => {
   const res = await axios.get(`${host}/list/${category}`, {

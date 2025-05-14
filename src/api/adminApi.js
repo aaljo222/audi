@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const host_home = "http://leo_spring_app:8080/api/";
+const host_home = "www.audimew.store/api/";
 const host=`${host_home}/admin`
 
 // axios 인스턴스 생성 및 인터셉터 설정
