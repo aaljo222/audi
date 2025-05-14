@@ -1,114 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { registerUser, checkId } from "../../api/memberApi";
-import styled from "styled-components";
 import {
   formatPhoneNumber,
   validatePhoneNumber,
   passwordRegex,
 } from "../signup/utils";
 
-// Import individual components or redefine them with styled-components
+// Import individual components
 import AddressSearch from "../customModal/AddressSearch";
-
-// Styled Components for SignupComponent (matching LoginComponent styling)
-const InputGroup = styled.div`
-  position: relative;
-  width: 90%;
-  margin: 0.9rem 0;
-`;
-
-const Input = styled.input`
-  width: 100%;
-  padding: 0.8rem 2rem;
-  font-size: 0.9rem;
-  background-color: var(--gray);
-  border-radius: 0.4rem;
-  border: 0.1rem solid var(--white);
-  outline: none;
-  margin-left: 1.2rem;
-
-  &:focus {
-    border: 0.1rem solid var(--primary-color);
-  }
-`;
-
-const Icon = styled.i`
-  position: absolute;
-  top: 50%;
-  left: 1rem;
-  transform: translateY(-50%);
-  font-size: 1.4rem;
-  color: var(--gray-2);
-`;
-
-const Button = styled.button`
-  cursor: pointer;
-  width: 90%;
-  padding: 0.5rem 0;
-  border-radius: 0.5rem;
-  border: none;
-  background-color: var(--primary-color);
-  color: var(--white);
-  font-size: 1.2rem;
-  outline: none;
-  margin-top: 1rem;
-`;
-
-const CheckButton = styled.button`
-  cursor: pointer;
-  padding: 0.5rem 1rem;
-  border-radius: 0.5rem;
-  border: none;
-  background-color: var(--primary-color);
-  color: var(--white);
-  font-size: 0.8rem;
-  outline: none;
-  margin-left: 0.5rem;
-`;
-
-const ErrorMessage = styled.div`
-  color: #e53e3e;
-  font-size: 0.75rem;
-  margin-top: 0.25rem;
-  margin-left: 1.2rem;
-`;
-
-const CheckboxGroup = styled.div`
-  display: flex;
-  align-items: center;
-  margin: 0.5rem 0;
-  padding-left: 1.2rem;
-`;
-
-const CheckboxLabel = styled.label`
-  display: flex;
-  align-items: center;
-  font-size: 0.8rem;
-  cursor: pointer;
-
-  input {
-    margin-right: 0.5rem;
-  }
-`;
-
-const AddressWrapper = styled.div`
-  display: flex;
-  width: 90%;
-  margin-left: 1.2rem;
-`;
-
-const AddressButton = styled.button`
-  cursor: pointer;
-  padding: 0.5rem 1rem;
-  border-radius: 0.5rem;
-  border: none;
-  background-color: var(--primary-color);
-  color: var(--white);
-  font-size: 0.8rem;
-  outline: none;
-  margin-left: 0.5rem;
-`;
 
 const SignUpComponent = () => {
   const navigate = useNavigate();
@@ -173,6 +73,16 @@ const SignUpComponent = () => {
       return;
     }
 
+    // Email domain special handling
+    if (name === "userEmailDomain" && value === "direct") {
+      setCustomDomainInput(true);
+      setFormData((prevState) => ({
+        ...prevState,
+        userEmailDomain: "",
+      }));
+      return;
+    }
+
     setFormData((prevState) => {
       const newState = {
         ...prevState,
@@ -211,6 +121,7 @@ const SignUpComponent = () => {
       ...prevState,
       userAddress: address,
     }));
+    setIsAddressModalOpen(false);
   };
 
   const handleUserIdCheck = async () => {
@@ -344,44 +255,44 @@ const SignUpComponent = () => {
   }, []);
 
   return (
-    <div>
-      {error && <ErrorMessage>{error}</ErrorMessage>}
+    <div className="w-full">
+      {error && <div className="text-red-600 text-sm ml-5 mt-1">{error}</div>}
 
       {/* User ID Input */}
-      <InputGroup>
-        <Icon className="bx bxs-user" />
-        <Input
-          type="text"
-          name="userId"
-          placeholder="아이디를 입력해주세요."
-          value={formData.userId}
-          onChange={handleChange}
-          style={{ paddingLeft: "1rem" }}
-        />
-        <CheckButton type="button" onClick={handleUserIdCheck}>
-          중복확인
-        </CheckButton>
-      </InputGroup>
+      <div className="relative w-[90%] mx-auto my-3.5">
+        <i className="bx bxs-user absolute top-1/2 left-4 transform -translate-y-1/2 text-xl text-gray-400"></i>
+        <div className="flex">
+          <input
+            type="text"
+            name="userId"
+            placeholder="아이디를 입력해주세요."
+            value={formData.userId}
+            onChange={handleChange}
+            className="w-full pl-4 py-3 text-sm bg-gray-100 rounded-md border border-white outline-none focus:border-blue-500"
+          />
+          <button
+            type="button"
+            onClick={handleUserIdCheck}
+            className="ml-2 px-4 py-2 rounded-md bg-blue-500 text-white text-sm outline-none cursor-pointer"
+          >
+            중복확인
+          </button>
+        </div>
+      </div>
 
       {/* Password Input */}
-      <InputGroup>
-        <Icon className="bx bxs-lock-alt" />
-        <Input
+      <div className="relative w-[90%] mx-auto my-3.5">
+        <i className="bx bxs-lock-alt absolute top-1/2 left-4 transform -translate-y-1/2 text-xl text-gray-400"></i>
+        <input
           type={showPassword ? "text" : "password"}
           name="userPw"
           placeholder="비밀번호를 입력해주세요."
           value={formData.userPw}
           onChange={handleChange}
-          style={{ paddingLeft: "1rem" }}
+          className="w-full pl-4 py-3 text-sm bg-gray-100 rounded-md border border-white outline-none focus:border-blue-500"
         />
         <span
-          style={{
-            position: "absolute",
-            right: "-8px",
-            top: "50%",
-            transform: "translateY(-50%)",
-            cursor: "pointer",
-          }}
+          className="absolute right-2 top-1/2 transform -translate-y-1/2 cursor-pointer"
           onClick={togglePasswordVisibility}
         >
           <img
@@ -391,32 +302,26 @@ const SignUpComponent = () => {
             height="24"
           />
         </span>
-      </InputGroup>
+      </div>
       {!passwordValid && formData.userPw && (
-        <ErrorMessage>
+        <div className="text-red-600 text-xs ml-5 mt-1">
           비밀번호는 6글자 이상, 영어, 숫자, 특수문자가 포함되어야 합니다.
-        </ErrorMessage>
+        </div>
       )}
 
       {/* Confirm Password Input */}
-      <InputGroup>
-        <Icon className="bx bxs-lock-alt" />
-        <Input
+      <div className="relative w-[90%] mx-auto my-3.5">
+        <i className="bx bxs-lock-alt absolute top-1/2 left-4 transform -translate-y-1/2 text-xl text-gray-400"></i>
+        <input
           type={showConfirmPassword ? "text" : "password"}
           name="confirmPassword"
           placeholder="비밀번호를 다시 입력해주세요."
           value={formData.confirmPassword}
           onChange={handleChange}
-          style={{ paddingLeft: "1rem" }}
+          className="w-full pl-4 py-3 text-sm bg-gray-100 rounded-md border border-white outline-none focus:border-blue-500"
         />
         <span
-          style={{
-            position: "absolute",
-            right: "-8px",
-            top: "50%",
-            transform: "translateY(-50%)",
-            cursor: "pointer",
-          }}
+          className="absolute right-2 top-1/2 transform -translate-y-1/2 cursor-pointer"
           onClick={toggleConfirmPasswordVisibility}
         >
           <img
@@ -428,79 +333,77 @@ const SignUpComponent = () => {
             height="24"
           />
         </span>
-      </InputGroup>
+      </div>
       {!passwordMatch && formData.confirmPassword && (
-        <ErrorMessage>비밀번호가 일치하지 않습니다.</ErrorMessage>
+        <div className="text-red-600 text-xs ml-5 mt-1">
+          비밀번호가 일치하지 않습니다.
+        </div>
       )}
 
       {/* Name Input */}
-      <InputGroup>
-        <Icon className="bx bxs-user" />
-        <Input
+      <div className="relative w-[90%] mx-auto my-3.5">
+        <i className="bx bxs-user absolute top-1/2 left-4 transform -translate-y-1/2 text-xl text-gray-400"></i>
+        <input
           type="text"
           name="userName"
           placeholder="이름을 입력해주세요."
           value={formData.userName}
           onChange={handleChange}
-          style={{ paddingLeft: "1rem" }}
+          className="w-full pl-4 py-3 text-sm bg-gray-100 rounded-md border border-white outline-none focus:border-blue-500"
         />
-      </InputGroup>
+      </div>
 
       {/* Address Input */}
-      <InputGroup>
-        <Icon className="bx bxs-home" />
-        <Input
-          type="text"
-          name="userAddress"
-          placeholder="주소를 입력해주세요."
-          value={formData.userAddress}
-          onChange={handleChange}
-          readOnly
-          style={{ paddingLeft: "1rem" }}
-        />
-        <AddressButton
-          type="button"
-          onClick={() => setIsAddressModalOpen(true)}
-        >
-          주소검색
-        </AddressButton>
-      </InputGroup>
+      <div className="relative w-[90%] mx-auto my-3.5">
+        <i className="bx bxs-home absolute top-1/2 left-4 transform -translate-y-1/2 text-xl text-gray-400"></i>
+        <div className="flex">
+          <input
+            type="text"
+            name="userAddress"
+            placeholder="주소를 입력해주세요."
+            value={formData.userAddress}
+            onChange={handleChange}
+            readOnly
+            className="w-full pl-4 py-3 text-sm bg-gray-100 rounded-md border border-white outline-none focus:border-blue-500"
+          />
+          <button
+            type="button"
+            onClick={() => setIsAddressModalOpen(true)}
+            className="ml-2 px-4 py-2 rounded-md bg-blue-500 text-white text-sm outline-none cursor-pointer"
+          >
+            주소검색
+          </button>
+        </div>
+      </div>
 
       {/* Email Input */}
-      <InputGroup>
-        <Icon className="bx bxs-envelope" />
-        <div style={{ display: "flex", width: "100%", marginLeft: "1.2rem" }}>
-          <Input
+      <div className="relative w-[90%] mx-auto my-3.5">
+        <i className="bx bxs-envelope absolute top-1/2 left-4 transform -translate-y-1/2 text-xl text-gray-400"></i>
+        <div className="flex ml-5 w-full">
+          <input
             type="text"
             name="userEmailId"
             placeholder="이메일"
             value={formData.userEmailId}
             onChange={handleChange}
-            style={{ width: "45%", margin: "0" }}
+            className="w-[45%] py-3 text-sm bg-gray-100 rounded-md border border-white outline-none focus:border-blue-500"
           />
-          <span style={{ margin: "0 5px", alignSelf: "center" }}>@</span>
+          <span className="mx-1 self-center">@</span>
           {customDomainInput ? (
-            <Input
+            <input
               type="text"
               name="userEmailDomain"
               placeholder="도메인"
               value={formData.userEmailDomain}
               onChange={handleChange}
-              style={{ width: "45%", margin: "0" }}
+              className="w-[45%] py-3 text-sm bg-gray-100 rounded-md border border-white outline-none focus:border-blue-500"
             />
           ) : (
             <select
               name="userEmailDomain"
               value={formData.userEmailDomain}
               onChange={handleChange}
-              style={{
-                width: "45%",
-                padding: "0.8rem",
-                borderRadius: "0.4rem",
-                border: "0.1rem solid var(--white)",
-                backgroundColor: "var(--gray)",
-                outline: "none",
-              }}
+              className="w-[45%] py-3 px-3 rounded-md border border-white bg-gray-100 outline-none"
             >
               <option value="">도메인 선택</option>
               <option value="naver.com">naver.com</option>
@@ -512,28 +415,31 @@ const SignUpComponent = () => {
             </select>
           )}
         </div>
-      </InputGroup>
+      </div>
 
       {/* Phone Input */}
-      <InputGroup>
-        <Icon className="bx bxs-phone" />
-        <Input
+      <div className="relative w-[90%] mx-auto my-3.5">
+        <i className="bx bxs-phone absolute top-1/2 left-4 transform -translate-y-1/2 text-xl text-gray-400"></i>
+        <input
           type="tel"
           name="userPhoneNum"
           placeholder="휴대폰 번호를 입력해주세요."
           value={formattedPhone}
           onChange={handleChange}
-          style={{ paddingLeft: "1rem" }}
+          className="w-full pl-4 py-3 text-sm bg-gray-100 rounded-md border border-white outline-none focus:border-blue-500"
         />
-      </InputGroup>
-      {phoneError && <ErrorMessage>{phoneError}</ErrorMessage>}
+      </div>
+      {phoneError && (
+        <div className="text-red-600 text-xs ml-5 mt-1">{phoneError}</div>
+      )}
 
       {/* Agreement Section */}
-      <div style={{ width: "90%", margin: "1rem auto" }}>
-        <CheckboxGroup>
-          <CheckboxLabel>
+      <div className="w-[90%] mx-auto my-4">
+        <div className="flex items-center my-2 ml-5">
+          <label className="flex items-center text-sm cursor-pointer">
             <input
               type="checkbox"
+              className="mr-2"
               checked={
                 formData.agreeAge &&
                 formData.agreeTerms &&
@@ -543,62 +449,66 @@ const SignUpComponent = () => {
               onChange={handleCheckAll}
             />
             전체 동의
-          </CheckboxLabel>
-        </CheckboxGroup>
+          </label>
+        </div>
 
-        <CheckboxGroup>
-          <CheckboxLabel>
+        <div className="flex items-center my-2 ml-5">
+          <label className="flex items-center text-sm cursor-pointer">
             <input
               type="checkbox"
               name="agreeAge"
+              className="mr-2"
               checked={formData.agreeAge}
               onChange={handleChange}
             />
             <span>
-              만 14세 이상입니다 <span style={{ color: "red" }}>(필수)</span>
+              만 14세 이상입니다 <span className="text-red-500">(필수)</span>
             </span>
-          </CheckboxLabel>
-        </CheckboxGroup>
+          </label>
+        </div>
 
-        <CheckboxGroup>
-          <CheckboxLabel>
+        <div className="flex items-center my-2 ml-5">
+          <label className="flex items-center text-sm cursor-pointer">
             <input
               type="checkbox"
               name="agreeTerms"
+              className="mr-2"
               checked={formData.agreeTerms}
               onChange={handleChange}
             />
             <span>
-              이용약관 <span style={{ color: "red" }}>(필수)</span>
+              이용약관 <span className="text-red-500">(필수)</span>
             </span>
-          </CheckboxLabel>
-        </CheckboxGroup>
+          </label>
+        </div>
 
-        <CheckboxGroup>
-          <CheckboxLabel>
+        <div className="flex items-center my-2 ml-5">
+          <label className="flex items-center text-sm cursor-pointer">
             <input
               type="checkbox"
               name="agreePrivacy"
+              className="mr-2"
               checked={formData.agreePrivacy}
               onChange={handleChange}
             />
             <span>
-              개인정보 수집/이용 <span style={{ color: "red" }}>(필수)</span>
+              개인정보 수집/이용 <span className="text-red-500">(필수)</span>
             </span>
-          </CheckboxLabel>
-        </CheckboxGroup>
+          </label>
+        </div>
 
-        <CheckboxGroup>
-          <CheckboxLabel>
+        <div className="flex items-center my-2 ml-5">
+          <label className="flex items-center text-sm cursor-pointer">
             <input
               type="checkbox"
               name="agreeComercial"
+              className="mr-2"
               checked={formData.agreeComercial}
               onChange={handleChange}
             />
             <span>마케팅 정보 수신 동의 (선택)</span>
-          </CheckboxLabel>
-        </CheckboxGroup>
+          </label>
+        </div>
       </div>
 
       {/* Address Search Modal */}
@@ -608,9 +518,14 @@ const SignUpComponent = () => {
         onAddressSelect={handleAddressSelect}
       />
 
-      <Button type="submit" onClick={handleSubmit} disabled={isSubmitting}>
+      <button
+        type="submit"
+        onClick={handleSubmit}
+        disabled={isSubmitting}
+        className="w-[90%] py-2 mx-auto mt-4 mb-6 block rounded-lg border-none bg-blue-500 text-white text-lg outline-none cursor-pointer"
+      >
         가입완료
-      </Button>
+      </button>
     </div>
   );
 };
