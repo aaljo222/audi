@@ -1,7 +1,7 @@
 import axios from "axios";
 
-const BASE_URL = "https://www.audime.shop/api/member";
-const REFRESH_URL = "https://www.audime.shop/api/auth/refresh";
+const BASE_URL = "https://audime.shop/api/member";  // ✅ www 제거
+const REFRESH_URL = "https://audime.shop/api/auth/refresh";
 
 const memberApi = axios.create({
   baseURL: BASE_URL,
