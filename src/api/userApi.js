@@ -44,7 +44,7 @@ userApi.interceptors.response.use(
         // refreshToken을 사용하여 새 accessToken 요청
         const refreshToken = localStorage.getItem("refreshToken");
         const response = await axios.post(
-          "http://localhost:8089/auth/refresh",
+          "https://www.audimew.store/api/auth/refresh",
           { refreshToken }
         );
 
