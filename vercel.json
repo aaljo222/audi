@@ -1,9 +1,8 @@
 {
-    "rewrites": [
-      {
-        "source": "/api/:match*",
-        "destination": "https://www.audimew.store/api/:match*"
-      }
-    ]
-  }
-  
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "https://13.124.239.123/api/$1"
+    }
+  ]
+}
