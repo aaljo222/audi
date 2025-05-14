@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const host = "http://localhost:8089/user";
+const host = "http://leo_spring_app:8080/api/user";
 
 // axios 인스턴스 생성
 const userApi = axios.create({

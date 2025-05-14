@@ -1,6 +1,7 @@
 import axios from "axios";
 
-const host = "http://localhost:8089/admin";
+const host_home = "http://leo_spring_app:8080/api/";
+const host=`${host_home}/admin`
 
 // axios 인스턴스 생성 및 인터셉터 설정
 const adminApi = axios.create({
@@ -40,7 +41,7 @@ adminApi.interceptors.response.use(
         // refreshToken을 사용하여 새 accessToken 요청
         const refreshToken = localStorage.getItem("refreshToken");
         const response = await axios.post(
-          "http://localhost:8089/auth/refresh",
+          `${host_home}/auth/refresh`,
           { refreshToken }
         );
 

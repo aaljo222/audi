@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const host = `http://localhost:8089/api/member`;
+const host = "http://leo_spring_app:8080/api/member";
 
 // 회원 API를 위한 axios 인스턴스 생성
 const memberApi = axios.create({
